@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: diplom
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: in-cluster
+    namespace: diplom
+  source:
+    path: "helm/nginx-feniks"
+    repoURL: "https://gitlab.infernofeniks.ru/feniks/nginx-feniks.git"
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: "containers.tag"
+          value: latest
+        - name: "ingress.hosts[0].host.paths.path"
+          value: "/diplom"
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
