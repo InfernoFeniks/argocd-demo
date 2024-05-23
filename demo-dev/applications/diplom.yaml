@@ -15,12 +15,10 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-        - values.yaml
+        - values_argocd.yaml
       parameters:
         - name: "containers.tag"
           value: latest
-        - name: "ingress.hosts[0].host.paths.path"
-          value: "/diplom"
   project: default
   syncPolicy:
     automated:
